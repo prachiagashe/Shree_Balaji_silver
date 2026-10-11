@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Receipt - Jewellery Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/receipt-print.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white"/>
+                    </svg>
+                </div>
+                <h2 class="sidebar-title">SHREE BALAJI</h2>
+                <p class="sidebar-subtitle">Silver & Jewellery</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-item-icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="create-receipt.html" class="nav-item active">
+                    <span class="nav-item-icon">📝</span>
+                    Create Receipt
+                </a>
+                <a href="receipt-history.html" class="nav-item">
+                    <span class="nav-item-icon">📋</span>
+                    Receipt History
+                </a>
+                <a href="customers.html" class="nav-item">
+                    <span class="nav-item-icon">👥</span>
+                    Customers
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <span class="nav-item-icon">📈</span>
+                    Reports
+                </a>
+                <a href="receipt-history.html" class="nav-item" onclick="exportToExcel()">
+                    <span class="nav-item-icon">📊</span>
+                    Export to Excel
+                </a>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <span class="nav-item-icon">🚪</span>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="page-title" id="pageTitle">Create Receipt</h1>
+                <div class="header-actions">
+                    <a href="dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+
+            <!-- Receipt Form -->
+            <div class="form-card" id="receiptFormCard">
+                <form id="receiptForm">
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Basic Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Receipt Number <span class="required">*</span></label>
+                                <input type="text" id="receiptNumber" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Receipt Date <span class="required">*</span></label>
+                                <input type="date" id="receiptDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Transaction Type <span class="required">*</span></label>
+                                <select id="transactionType" class="form-control" required>
+                                    <option value="">Select Transaction Type</option>
+                                    <option value="Cash Receipt">Cash Receipt</option>
+                                    <option value="Purchase">Purchase</option>
+                                    <option value="Rate Purchase">Rate Purchase</option>
+                                    <option value="Rate Sales">Rate Sales</option>
+                                    <option value="Manufacturing Receipt">Manufacturing Receipt</option>
+                                    <option value="Manufacturing Issue">Manufacturing Issue</option>
+                                    <option value="Approval Receipt">Approval Receipt</option>
+                                    <option value="Approval Issue">Approval Issue</option>
+                                    <option value="Job Work Issue">Job Work Issue</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Information -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Customer Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Customer Name <span class="required">*</span></label>
+                                <input type="text" id="customerName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Mobile Number <span class="required">*</span></label>
+                                <input type="tel" id="mobileNumber" class="form-control" required pattern="[0-9]{10}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Customer Address</label>
+                            <textarea id="customerAddress" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Items -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Items</h2>
+                        <div class="table-responsive">
+                            <table class="item-table" id="itemsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%;">Item Name</th>
+                                        <th style="width: 10%;">Bill Number</th>
+                                        <th style="width: 8%;">Fine Weight (g)</th>
+                                        <th style="width: 8%;">Alloy Weight (g)</th>
+                                        <th style="width: 8%;">Total Weight (g)</th>
+                                        <th style="width: 8%;">Metal Rate (₹/g)</th>
+                                        <th style="width: 8%;">Making Rate (₹/g)</th>
+                                        <th style="width: 8%;">Making Charges (₹)</th>
+                                        <th style="width: 10%;">Amount (₹)</th>
+                                        <th style="width: 5%;">CGST %</th>
+                                        <th style="width: 5%;">SGST %</th>
+                                        <th style="width: 7%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemsBody">
+                                    <!-- Items will be added here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="addItemBtn">+ Add Item</button>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Totals</h2>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-label">Subtotal (₹)</label>
+                                <input type="text" id="subtotal" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Total CGST (₹)</label>
+                                <input type="text" id="totalCGST" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Total SGST (₹)</label>
+                                <input type="text" id="totalSGST" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-label">Grand Total (₹)</label>
+                                <input type="text" id="grandTotal" class="form-control" readonly style="font-weight: bold; font-size: 18px;">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Payment Mode</label>
+                                <select id="paymentMode" class="form-control">
+                                    <option value="Cash">Cash</option>
+                                    <option value="Card">Card</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="Cheque">Cheque</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Paid Amount (₹)</label>
+                                <input type="number" id="paidAmount" class="form-control" step="0.01" min="0">
+                            </div>
+                        </div>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-label">Outstanding Balance (₹)</label>
+                                <input type="text" id="outstandingBalance" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Remarks</label>
+                                <input type="text" id="remarks" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">&nbsp;</label>
+                                <div class="flex gap-10">
+                                    <button type="submit" class="btn btn-primary" id="saveBtn">Save Receipt</button>
+                                    <button type="button" class="btn btn-success" id="previewBtn">Preview</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Receipt Preview (Hidden by default) -->
+            <div class="receipt-preview hidden" id="receiptPreview">
+                <!-- Preview will be generated here -->
+            </div>
+
+            <!-- Preview Actions -->
+            <div class="receipt-actions hidden" id="previewActions">
+                <button class="btn btn-primary" id="printBtn">🖨️ Print</button>
+                <button class="btn btn-success" id="confirmSaveBtn">💾 Save</button>
+                <button class="btn btn-secondary" id="editBtn">✏️ Edit</button>
+                <button class="btn btn-danger" id="cancelBtn">❌ Cancel</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/receipt.js"></script>
+</body>
+</html>

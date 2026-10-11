@@ -1,0 +1,165 @@
+/* Jewellery Shop Receipt Management System - Print Styles */
+
+@media print {
+    /* Hide all non-print elements */
+    .sidebar,
+    .content-header,
+    .table-filters,
+    .receipt-actions,
+    .notification,
+    .modal-overlay,
+    .btn,
+    .form-card:not(.receipt-preview),
+    .table-container:not(.receipt-preview),
+    .demo-notice,
+    .action-buttons,
+    .header-actions {
+        display: none !important;
+    }
+    
+    /* Reset body and main content */
+    body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Receipt preview styling for print */
+    .receipt-preview {
+        border: 2px solid #000000 !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
+    
+    .receipt-header {
+        border-bottom: 2px solid #000000 !important;
+    }
+    
+    .receipt-shop-name {
+        color: #000000 !important;
+    }
+    
+    .receipt-title {
+        color: #000000 !important;
+    }
+    
+    .receipt-info-label {
+        color: #000000 !important;
+    }
+    
+    .receipt-info-value {
+        color: #000000 !important;
+    }
+    
+    .receipt-total-row.grand-total {
+        color: #000000 !important;
+        border-top: 2px solid #000000 !important;
+    }
+    
+    /* Table styling for print */
+    .item-table,
+    .data-table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+    }
+    
+    .item-table th,
+    .item-table td,
+    .data-table th,
+    .data-table td {
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+    }
+    
+    .item-table th,
+    .data-table th {
+        background: #F5F5F5 !important;
+        color: #000000 !important;
+    }
+    
+    /* Form inputs for print */
+    input,
+    select,
+    textarea {
+        border: 1px solid #000000 !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+    }
+    
+    /* Remove shadows and background colors */
+    * {
+        box-shadow: none !important;
+        background-image: none !important;
+    }
+    
+    /* Ensure text is black */
+    * {
+        color: #000000 !important;
+    }
+    
+    /* Page breaks */
+    .receipt-preview {
+        page-break-after: always;
+    }
+    
+    .receipt-preview:last-child {
+        page-break-after: auto;
+    }
+    
+    /* A4 size optimization */
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+    
+    /* Receipt-style smaller print */
+    .receipt-small-print {
+        @page {
+            size: 80mm auto;
+            margin: 5mm;
+        }
+        
+        .receipt-preview {
+            font-size: 10px !important;
+            padding: 10px !important;
+        }
+        
+        .receipt-shop-name {
+            font-size: 14px !important;
+        }
+        
+        .receipt-title {
+            font-size: 12px !important;
+        }
+        
+        .item-table th,
+        .item-table td {
+            padding: 4px !important;
+            font-size: 9px !important;
+        }
+    }
+}
+
+/* Print button visibility */
+.print-only {
+    display: none;
+}
+
+@media print {
+    .print-only {
+        display: block;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+}

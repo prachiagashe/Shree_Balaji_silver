@@ -1,0 +1,9 @@
+This is a placeholder for the shop logo.
+
+To add a real logo:
+1. Place your logo image file (PNG, JPG, SVG) in this folder
+2. Name it "logo.png" or "logo.svg"
+3. Update the HTML files to reference your logo file
+
+Example:
+<img src="assets/logo.png" alt="Shop Logo" class="shop-logo">

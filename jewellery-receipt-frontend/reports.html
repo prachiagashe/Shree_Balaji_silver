@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Jewellery Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/receipt-print.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white"/>
+                    </svg>
+                </div>
+                <h2 class="sidebar-title">SHREE BALAJI</h2>
+                <p class="sidebar-subtitle">Silver & Jewellery</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-item-icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="create-receipt.html" class="nav-item">
+                    <span class="nav-item-icon">📝</span>
+                    Create Receipt
+                </a>
+                <a href="receipt-history.html" class="nav-item">
+                    <span class="nav-item-icon">📋</span>
+                    Receipt History
+                </a>
+                <a href="customers.html" class="nav-item">
+                    <span class="nav-item-icon">👥</span>
+                    Customers
+                </a>
+                <a href="reports.html" class="nav-item active">
+                    <span class="nav-item-icon">📈</span>
+                    Reports
+                </a>
+                <a href="#" class="nav-item" onclick="exportToExcel()">
+                    <span class="nav-item-icon">📊</span>
+                    Export to Excel
+                </a>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <span class="nav-item-icon">🚪</span>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="page-title">Reports</h1>
+                <div class="header-actions">
+                    <button class="btn btn-success" onclick="exportReportToExcel()">📊 Export Report</button>
+                </div>
+            </div>
+
+            <!-- Report Filters -->
+            <div class="form-card">
+                <div class="form-section-title">Report Filters</div>
+                <div class="form-row-4">
+                    <div class="form-group">
+                        <label class="form-label">From Date</label>
+                        <input type="date" id="reportDateFrom" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">To Date</label>
+                        <input type="date" id="reportDateTo" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transaction Type</label>
+                        <select id="reportTransactionType" class="form-control">
+                            <option value="">All Types</option>
+                            <option value="Cash Receipt">Cash Receipt</option>
+                            <option value="Purchase">Purchase</option>
+                            <option value="Rate Purchase">Rate Purchase</option>
+                            <option value="Rate Sales">Rate Sales</option>
+                            <option value="Manufacturing Receipt">Manufacturing Receipt</option>
+                            <option value="Manufacturing Issue">Manufacturing Issue</option>
+                            <option value="Approval Receipt">Approval Receipt</option>
+                            <option value="Approval Issue">Approval Issue</option>
+                            <option value="Job Work Issue">Job Work Issue</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">&nbsp;</label>
+                        <button class="btn btn-primary" onclick="generateReport()">Generate Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Statistics -->
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="summary-card-icon">📄</div>
+                    <h3 class="summary-card-title">Total Receipts</h3>
+                    <p class="summary-card-value" id="reportTotalReceipts">0</p>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-icon">💰</div>
+                    <h3 class="summary-card-title">Total Amount</h3>
+                    <p class="summary-card-value" id="reportTotalAmount">₹0</p>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-icon">💵</div>
+                    <h3 class="summary-card-title">Total Collected</h3>
+                    <p class="summary-card-value" id="reportTotalCollected">₹0</p>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-icon">⚠️</div>
+                    <h3 class="summary-card-title">Total Outstanding</h3>
+                    <p class="summary-card-value" id="reportTotalOutstanding">₹0</p>
+                </div>
+            </div>
+
+            <!-- Transaction Type Breakdown -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2 class="table-title">Transaction Type Breakdown</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction Type</th>
+                                <th>Count</th>
+                                <th>Total Amount</th>
+                                <th>Total Collected</th>
+                                <th>Outstanding</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTypeBody">
+                            <!-- Transaction type breakdown will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Daily Summary -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2 class="table-title">Daily Summary</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Receipts</th>
+                                <th>Total Amount</th>
+                                <th>Collected</th>
+                                <th>Outstanding</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dailySummaryBody">
+                            <!-- Daily summary will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>
